@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi - Catalogo Anime</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: "oklch(0.511 0.096 186.391)",
+                            foreground: "#ffffff"
+                        },
+                        muted: {
+                            DEFAULT: "oklch(0.97 0 0)",
+                        },
+                        card: {
+                            DEFAULT: "#ffffff",
+                        },
+                        destructive: {
+                            DEFAULT: "#ef4444",
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased bg-muted">
+
+    <div class="flex min-h-screen flex-col items-center justify-center gap-6 p-6 md:p-10">
+        <div class="flex w-full max-w-sm flex-col gap-6">
+            
+            <a href="/" class="flex items-center justify-center gap-2 self-center font-medium text-gray-900">
+                <div class="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </div>
+                <span class="text-lg">AnimeDB</span>
+            </a>
+
+            <div class="rounded-xl border border-gray-200 bg-card text-gray-900 shadow-sm">
+                <div class="flex flex-col space-y-1.5 p-6 text-center">
+                    <h3 class="font-semibold tracking-tight text-xl">Bentornato</h3>
+                    <p class="text-sm text-gray-500">Accedi con le tue credenziali</p>
+                </div>
+                
+                <div class="p-6 pt-0">
+                    <div th:if="${param.error}" class="mb-4 text-sm text-destructive text-center font-medium">
+                        Credenziali non valide. Riprova.
+                    </div>
+                    <div th:if="${param.logout}" class="mb-4 text-sm text-green-600 text-center font-medium">
+                        Logout effettuato con successo.
+                    </div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="flex flex-col gap-6">
+                            
+                            <div class="space-y-2">
+                                <label for="username" class="text-sm font-medium leading-none">Username</label>
+                                <input type="text" id="username" name="username" placeholder="Inserisci il tuo username" required
+                                    class="flex h-9 w-full rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label for="password" class="text-sm font-medium leading-none">Password</label>
+                                <input type="password" id="password" name="password" placeholder="Inserisci la tua password"  required 
+                                    class="flex h-9 w-full rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full">
+                                Accedi
+                            </button>
+                            
+                            <p class="text-center text-sm text-gray-500">
+                                Non hai un account? 
+                                <a href="#" class="underline underline-offset-4 text-gray-900 hover:text-primary">Registrati</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
