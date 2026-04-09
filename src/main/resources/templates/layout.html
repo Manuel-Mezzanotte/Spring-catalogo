@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it" th:fragment="layout(content)" x-data="{ sidebarOpen: $persist(true), darkMode: $persist(false) }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo Anime</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: "oklch(0.511 0.096 186.391)",
+                        },
+                        background: {
+                            DEFAULT: "oklch(1 0 0)",
+                            dark: "oklch(0.145 0 0)",
+                        },
+                        sidebar: {
+                            DEFAULT: "oklch(0.985 0 0)",
+                            dark: "oklch(0.145 0 0)",
+                            border: "oklch(0.92 0 0)",
+                            borderDark: "oklch(0.2 0 0)",
+                            accent: "oklch(0.97 0 0)",
+                            accentDark: "oklch(0.18 0 0)",
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-sidebar dark:bg-sidebar-dark text-gray-900 dark:text-gray-100 antialiased flex h-screen overflow-hidden font-sans">
+    <aside 
+        class="flex flex-col bg-sidebar dark:bg-sidebar-dark transition-all duration-300 h-full relative z-20 shrink-0"
+        :class="sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'">
+        <div class="flex flex-col h-full w-64">
+            <div class="h-14 flex items-center justify-between px-4 shrink-0">
+                <a th:href="@{/}" class="flex items-center gap-2">
+                    <span class="font-bold text-xl text-center text-gray-900 dark:text-white">AnimeDB</span>
+                </a>
+            </div>
+            <div class="flex-1 overflow-y-auto px-2 py-4 space-y-1">
+                <a th:href="@{/}" class="flex items-center gap-3 px-2 py-2 rounded-md bg-sidebar-accent dark:bg-sidebar-accentDark text-gray-900 dark:text-white transition-colors">
+                    <svg class="shrink-0 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10M9 21h6" />
+                    </svg>
+                    <span class="font-medium text-sm">Panoramica</span>
+                </a>
+                <a th:href="@{/new}" class="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accentDark text-gray-600 dark:text-gray-400 transition-colors">
+                    <svg class="shrink-0 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span class="font-medium text-sm">Nuovo Anime</span>
+                </a>
+            </div>
+            <div class="p-2 shrink-0">
+                <button class="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-sidebar-accent dark:hover:bg-sidebar-accentDark transition-colors text-left">
+                    <div class="shrink-0 w-8 h-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full flex items-center justify-center font-bold text-sm">N</div>
+                    <div class="flex-1 min-w-0 overflow-hidden">
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">Utente Test</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">login@esempio.it</p>
+                    </div>
+                    <div class="shrink-0">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                        </svg>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </aside>
+    
+</body>
+</html>
