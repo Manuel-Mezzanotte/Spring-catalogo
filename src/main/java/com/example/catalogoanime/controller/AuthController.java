@@ -24,6 +24,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@RequestParam String username, 
+                               @RequestParam String email,
                                @RequestParam String password, 
                                @RequestParam String confirmPassword, 
                                Model model) {
@@ -38,8 +39,14 @@ public class AuthController {
             return "register";
         }
 
+        if (userRepository.findByEmail(email).isPresent()) {
+            model.addAttribute("error", "Email già in uso.");
+            return "register";
+        }
+
         AppUser newUser = new AppUser();
         newUser.setUsername(username);
+        newUser.setEmail(email);
         newUser.setPassword(passwordEncoder.encode(password));
         userRepository.save(newUser);
 
