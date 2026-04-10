@@ -64,6 +64,9 @@
                     <div th:if="${param.logout}" class="mb-4 text-sm text-green-600 text-center font-medium">
                         Logout effettuato con successo.
                     </div>
+                    <div th:if="${param.registered}" class="mb-4 text-sm text-green-600 text-center font-medium bg-green-50 p-2 rounded-md">
+                        Registrazione completata! Ora puoi accedere.
+                    </div>
 
                     <form th:action="@{/login}" method="post">
                         <div class="flex flex-col gap-6">
@@ -71,13 +74,13 @@
                             <div class="space-y-2">
                                 <label for="username" class="text-sm font-medium leading-none">Username</label>
                                 <input type="text" id="username" name="username" placeholder="Inserisci il tuo username" required
-                                    class="flex h-9 w-full rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50">
+                                       class="flex h-9 w-full rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary">
                             </div>
                             
                             <div class="space-y-2">
                                 <label for="password" class="text-sm font-medium leading-none">Password</label>
                                 <input type="password" id="password" name="password" placeholder="Inserisci la tua password"  required 
-                                    class="flex h-9 w-full rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50">
+                                       class="flex h-9 w-full rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary">
                             </div>
                             
                             <button type="submit" 
@@ -87,7 +90,7 @@
                             
                             <p class="text-center text-sm text-gray-500">
                                 Non hai un account? 
-                                <a href="#" class="underline underline-offset-4 text-gray-900 hover:text-primary">Registrati</a>
+                                <a th:href="@{/register}" class="underline underline-offset-4 text-gray-900 hover:text-primary">Registrati</a>
                             </p>
                         </div>
                     </form>
