@@ -4,17 +4,17 @@
     <title>Nuovo Anime</title>
 </head>
 <body>
-<main th:fragment="content" class="flex flex-col gap-6 p-4 sm:p-6 lg:p-8" x-data="animeForm()">
-    <div class="flex items-center justify-between">
+<main th:fragment="content" class="flex flex-col h-[calc(100vh-3.5rem)] gap-4 p-4 sm:p-6 lg:p-8" x-data="animeForm()">
+    <div class="flex items-center justify-between shrink-0">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Aggiungi Nuovo Anime</h1>
         <a th:href="@{/}" class="inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none transition-colors">
             Torna al catalogo
         </a>
     </div>
 
-    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
-        <form th:action="@{/api/anime/create}" method="post" id="newAnimeForm" class="flex flex-col m-0 p-0">
-            <div class="p-6 flex-1 space-y-6">
+    <div class="bg-white dark:bg-sidebar-dark rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col h-full overflow-hidden">
+        <form th:action="@{/api/anime/create}" method="post" id="newAnimeForm" class="flex flex-col h-full m-0 p-0">
+            <div class="p-6 flex-1 overflow-y-auto space-y-5">
                 
                 <div class="relative z-50">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -49,8 +49,8 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-0">
-                    <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 relative z-0">
+                    <div class="space-y-3 md:col-span-2">
                         <div class="space-y-1">
                             <label for="titolo" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Titolo <span class="text-destructive">*</span></label>
                             <input type="text" id="titolo" name="titolo" x-model="titolo" required placeholder="Inserisci il titolo dell'anime"
@@ -66,14 +66,14 @@
                         <div class="space-y-1">
                             <label for="descrizione" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Descrizione</label>
                             <textarea id="descrizione" name="descrizione" rows="4" x-model="descrizione" placeholder="Breve trama..."
-                                      class="flex min-h-[100px] w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white resize-y"></textarea>
+                                      class="flex h-24 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white resize-y"></textarea>
                         </div>
                     </div>
 
-                    <div class="flex flex-col space-y-4">
-                        <div class="w-full aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                        <div class="flex flex-col space-y-3">
+                            <div class="w-full h-full min-h-[200px] max-h-[300px] bg-gray-100 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col items-center justify-center text-center p-2">
                             <template x-if="coverUrl">
-                                <img :src="coverUrl" alt="Cover Preview" class="w-full h-full object-cover" @error="$el.style.display='none'">
+                                <img :src="coverUrl" alt="Cover Preview" class="w-full h-full object-contain rounded-md" @error="$el.style.display='none'">
                             </template>
                             <template x-if="!coverUrl">
                                 <div class="text-gray-400 dark:text-gray-500">
