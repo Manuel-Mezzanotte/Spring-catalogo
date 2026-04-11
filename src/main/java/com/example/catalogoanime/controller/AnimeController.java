@@ -30,6 +30,11 @@ public class AnimeController {
         return "home";
     }
 
+    @GetMapping("/new")
+    public String newAnime() {
+        return "new";
+    }
+
     @PostMapping("/api/anime/create")
     public String createAnime(
             @RequestParam String titolo,
