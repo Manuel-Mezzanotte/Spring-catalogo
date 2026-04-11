@@ -209,19 +209,19 @@
                         <div class="space-y-1">
                             <label for="currentPassword" class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Password Attuale</label>
                             <input type="password" id="currentPassword" name="currentPassword" required 
-                                   class="flex h-10 w-full items-center rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary dark:text-white">
+                                   class="flex h-10 w-full items-center rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
                         </div>
                         
                         <div class="space-y-1">
                             <label for="newPassword" class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Nuova Password</label>
                             <input type="password" id="newPassword" name="newPassword" required 
-                                   class="flex h-10 w-full items-center rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary dark:text-white">
+                                   class="flex h-10 w-full items-center rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
                         </div>
                         
                         <div class="space-y-1">
                             <label for="confirmNewPassword" class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Conferma Nuova Password</label>
                             <input type="password" id="confirmNewPassword" name="confirmNewPassword" required 
-                                   class="flex h-10 w-full items-center rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 text-sm shadow-sm transition-colors focus:outline-none focus:ring-1 focus:ring-primary dark:text-white">
+                                   class="flex h-10 w-full items-center rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
                         </div>
                         
                         <div class="flex justify-end gap-3 pt-2">
@@ -254,7 +254,8 @@
              x-transition:leave="transition ease-in duration-200"
              x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
              x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-             class="relative bg-white dark:bg-sidebar-dark rounded-xl shadow-2xl w-full max-w-lg border border-gray-200 dark:border-gray-800 overflow-hidden m-4 flex flex-col max-h-[90vh]">
+             class="relative bg-white dark:bg-sidebar-dark rounded-xl shadow-2xl w-full max-w-2xl border border-gray-200 dark:border-gray-800 overflow-hidden m-4 flex flex-col max-h-[90vh]"
+             x-data="{ titolo: '', coverUrl: '' }">
              
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800 shrink-0">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Nuovo Anime</h3>
@@ -265,14 +266,101 @@
                 </button>
             </div>
             
-            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800 flex justify-end gap-3 shrink-0">
-                <button @click="newAnimeModalOpen = false" type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
-                    Annulla
-                </button>
-                <button type="button" class="inline-flex items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 px-4 py-2 text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                    Crea
-                </button>
-            </div>
+            <form th:action="@{/api/anime/create}" method="post" id="newAnimeForm" class="flex flex-col flex-1 overflow-hidden m-0 p-0">
+                
+                <div class="p-6 overflow-y-auto flex-1 space-y-6">
+                    
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" disabled placeholder="Cerca titolo anime (Autocompletamento in arrivo...)" 
+                               class="flex h-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 pl-10 pr-3 py-2 text-sm text-gray-500 cursor-not-allowed shadow-sm focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="space-y-1">
+                                <label for="titolo" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Titolo <span class="text-destructive">*</span></label>
+                                <input type="text" id="titolo" name="titolo" x-model="titolo" required placeholder="Inserisci il titolo dell'anime"
+                                       class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
+                            </div>
+
+                            <div class="space-y-1">
+                                <label for="coverUrl" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">URL Copertina <span class="text-destructive">*</span></label>
+                                <input type="url" id="coverUrl" name="coverUrl" x-model="coverUrl" required placeholder="https://..."
+                                       class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
+                            </div>
+
+                            <div class="space-y-1">
+                                <label for="descrizione" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Descrizione</label>
+                                <textarea id="descrizione" name="descrizione" rows="4" placeholder="Breve trama..."
+                                          class="flex min-h-[100px] w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white resize-y"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col space-y-4">
+                            <div class="w-full aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                                <template x-if="coverUrl">
+                                    <img :src="coverUrl" alt="Cover Preview" class="w-full h-full object-cover" @error="$el.style.display='none'">
+                                </template>
+                                <template x-if="!coverUrl">
+                                    <div class="text-gray-400 dark:text-gray-500">
+                                        <svg class="mx-auto h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span class="text-xs font-medium">Anteprima</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="space-y-1">
+                            <label for="genere" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Genere</label>
+                            <input type="text" id="genere" name="genere" placeholder="Es. Shonen, Isekai..."
+                                   class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="annoUscita" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Anno uscita</label>
+                            <input type="number" id="annoUscita" name="annoUscita" placeholder="2024"
+                                   class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="studio" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Studio</label>
+                            <input type="text" id="studio" name="studio" placeholder="Es. MAPPA..."
+                                   class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
+                        </div>
+                        <div class="space-y-1">
+                            <label for="episodi" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Episodi</label>
+                            <input type="number" id="episodi" name="episodi" placeholder="12"
+                                   class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center mt-2">
+                        <label class="flex items-center gap-3 cursor-pointer rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-4 h-10 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors w-full sm:w-auto shadow-sm">
+                            <input type="checkbox" id="inCorso" name="inCorso" value="true" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-200">Anime attualmente in corso</span>
+                        </label>
+                    </div>
+
+                </div>
+                
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800 flex justify-end gap-3 shrink-0">
+                    <button @click="newAnimeModalOpen = false" type="button" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-6 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors w-24">
+                        Annulla
+                    </button>
+                    <button type="submit" 
+                            class="inline-flex items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 px-6 py-2 text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed w-24"
+                            :disabled="titolo.trim().length === 0 || coverUrl.trim().length === 0">
+                        Crea
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

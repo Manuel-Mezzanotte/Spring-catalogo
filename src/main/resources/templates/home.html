@@ -7,7 +7,7 @@
 <main th:fragment="content" class="flex flex-col gap-6 p-4 sm:p-6 lg:p-8">
     <div class="flex items-center justify-between">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Il Tuo Catalogo Anime</h1>
-        <button @click="newAnimeModalOpen = true" class="inline-flex items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 px-4 py-2 text-sm font-medium transition-colors shadow-sm">
+        <button @click="newAnimeModalOpen = true" class="inline-flex items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 px-4 py-2 text-sm font-medium transition-colors shadow-sm focus:outline-none">
             <svg class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
             </svg>
@@ -23,12 +23,36 @@
         </div>
         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Catalogo vuoto</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-6">Non hai ancora inserito nessun anime nel tuo catalogo. Inizia subito ad aggiungerne uno.</p>
-        <button @click="newAnimeModalOpen = true" class="inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-2 text-sm font-medium transition-colors shadow-sm">
+        <button @click="newAnimeModalOpen = true" class="inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-2 text-sm font-medium transition-colors shadow-sm focus:outline-none">
             Aggiungi il tuo primo anime
         </button>
     </div>
 
-    
+    <div th:unless="${animes.isEmpty()}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+        <div th:each="anime : ${animes}" class="group relative flex flex-col">
+            
+            <div class="w-full aspect-[4/5] bg-gray-100 dark:bg-gray-900 relative overflow-hidden rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
+                <img th:src="${anime.coverUrl}" alt="Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300x450?text=No+Cover'">
+                
+                <div th:if="${anime.genere != null && !anime.genere.isEmpty()}" class="absolute top-2 right-2 bg-primary/90 text-white text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-sm shadow-sm" th:text="${anime.genere}"></div>
+                
+                <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-white/10">
+                    <span class="w-1.5 h-1.5 rounded-full" th:classappend="${anime.inCorso} ? 'bg-green-400' : 'bg-gray-400'"></span>
+                    <span th:text="${anime.episodi != null ? anime.episodi + ' Ep' : '?? Ep'}"></span>
+                </div>
+            </div>
+            
+            <div class="pt-3 px-1 flex flex-col gap-0.5">
+                <h3 class="font-bold text-base text-gray-900 dark:text-white leading-tight line-clamp-1" th:text="${anime.titolo}" th:title="${anime.titolo}"></h3>
+                
+                <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 gap-1.5">
+                    <span th:if="${anime.annoUscita != null}" th:text="${anime.annoUscita}"></span>
+                    <span th:if="${anime.annoUscita != null && anime.studio != null && !anime.studio.isEmpty()}">&bull;</span>
+                    <span th:if="${anime.studio != null && !anime.studio.isEmpty()}" class="truncate" th:text="${anime.studio}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 </body>
 </html>

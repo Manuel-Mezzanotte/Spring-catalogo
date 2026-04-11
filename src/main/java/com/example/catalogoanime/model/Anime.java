@@ -1,20 +1,16 @@
 package com.example.catalogoanime.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Table(name = "anime")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class Anime {
 
     @Id
@@ -24,9 +20,19 @@ public class Anime {
     @Column(nullable = false)
     private String titolo;
 
+    @Column(nullable = false)
+    private String coverUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String descrizione;
+
+    private Integer annoUscita;
+
     private String studio;
 
     private String genere;
 
-    private Integer annoUscita;
+    private Integer episodi;
+    
+    private Boolean inCorso = false;
 }
