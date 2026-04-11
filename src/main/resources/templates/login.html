@@ -88,6 +88,10 @@
                         Registrazione completata! Ora puoi accedere.
                     </div>
 
+                    <div th:if="${param.passwordChanged}" class="mb-4 text-sm text-green-600 dark:text-green-400 text-center font-medium bg-green-50 dark:bg-green-900/20 p-2 rounded-md border border-green-200 dark:border-green-800">
+                        Password modificata con successo. Effettua nuovamente l'accesso.
+                    </div>
+
                     <form th:action="@{/login}" method="post">
                         <div class="flex flex-col gap-6">
                             

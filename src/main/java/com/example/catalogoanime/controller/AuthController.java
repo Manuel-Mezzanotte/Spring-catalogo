@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.context.SecurityContextHolder;
+import jakarta.servlet.http.HttpServletRequest;
+
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
@@ -51,5 +57,41 @@ public class AuthController {
         userRepository.save(newUser);
 
         return "redirect:/login?registered";
+    }
+
+    @PostMapping("/profile/change-password")
+    public String changePassword(@RequestParam String currentPassword,
+                                 @RequestParam String newPassword,
+                                 @RequestParam String confirmNewPassword,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 RedirectAttributes redirectAttributes,
+                                 HttpServletRequest request) {
+        
+        AppUser user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            redirectAttributes.addFlashAttribute("passwordError", "La password attuale è errata.");
+            return "redirect:" + request.getHeader("Referer");
+        }
+
+        if (newPassword.equals(currentPassword)) {
+            redirectAttributes.addFlashAttribute("passwordError", "La nuova password non può essere uguale a quella attuale.");
+            return "redirect:" + request.getHeader("Referer");
+        }
+        
+        if (!newPassword.equals(confirmNewPassword)) {
+            redirectAttributes.addFlashAttribute("passwordError", "Le nuove password non coincidono.");
+            return "redirect:" + request.getHeader("Referer");
+        }
+        
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        
+        SecurityContextHolder.clearContext();
+        if (request.getSession(false) != null) {
+            request.getSession(false).invalidate();
+        }
+        
+        return "redirect:/login?passwordChanged";
     }
 }
