@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
-    List<Anime> findByUser(AppUser user);
-    List<Anime> findByUserAndTitoloContainingIgnoreCase(AppUser user, String titolo);
+    List<Anime> findByUserOrderByTitoloAsc(AppUser user);
+    List<Anime> findByUserAndTitoloContainingIgnoreCaseOrderByTitoloAsc(AppUser user, String titolo);
 }

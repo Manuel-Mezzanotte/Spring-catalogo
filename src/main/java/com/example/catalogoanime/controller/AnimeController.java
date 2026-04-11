@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class AnimeController {
         
         List<Anime> animes;
         if (search != null && !search.trim().isEmpty()) {
-            animes = animeRepository.findByUserAndTitoloContainingIgnoreCase(currentUser, search);
+            animes = animeRepository.findByUserAndTitoloContainingIgnoreCaseOrderByTitoloAsc(currentUser, search);
             model.addAttribute("search", search);
         } else {
-            animes = animeRepository.findByUser(currentUser);
+            animes = animeRepository.findByUserOrderByTitoloAsc(currentUser);
         }
         
         model.addAttribute("animes", animes);
@@ -70,7 +71,8 @@ public class AnimeController {
             @RequestParam(required = false) String genere,
             @RequestParam(required = false) Integer episodi,
             @RequestParam(required = false) Boolean inCorso,
-            @AuthenticationPrincipal UserDetails userDetails
+            @AuthenticationPrincipal UserDetails userDetails,
+            RedirectAttributes redirectAttributes
     ) {
         AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
 
@@ -85,20 +87,31 @@ public class AnimeController {
         anime.setInCorso(inCorso != null ? inCorso : false);
         anime.setUser(currentUser);
 
-        animeRepository.save(anime);
-
-        return "redirect:/";
+        anime = animeRepository.save(anime);
+        
+        redirectAttributes.addFlashAttribute("successMessage", "Anime inserito con successo!");
+        return "redirect:/item/" + anime.getId();
     }
 
     @PostMapping("/api/anime/delete/{id}")
-    public String deleteAnime(@org.springframework.web.bind.annotation.PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+    public String deleteAnime(@org.springframework.web.bind.annotation.PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
         AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
         Anime anime = animeRepository.findById(id).orElse(null);
         
         if (anime != null && anime.getUser().getId().equals(currentUser.getId())) {
             animeRepository.delete(anime);
+            redirectAttributes.addFlashAttribute("successMessage", "Anime eliminato dal catalogo.");
         }
         
+        return "redirect:/";
+    }
+
+    @PostMapping("/api/anime/delete-all")
+    public String deleteAllAnime(@AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+        AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        List<Anime> animes = animeRepository.findByUserOrderByTitoloAsc(currentUser);
+        animeRepository.deleteAll(animes);
+        redirectAttributes.addFlashAttribute("successMessage", "Catalogo svuotato completamente.");
         return "redirect:/";
     }
 }
