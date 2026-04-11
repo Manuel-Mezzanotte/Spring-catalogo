@@ -42,69 +42,16 @@
     </script>
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.data('animeForm', () => ({
+            Alpine.data('animeForm', (prefill) => ({
                 searchQuery: '',
-                searchResults: [],
-                isSearching: false,
-                titolo: '',
-                coverUrl: '',
-                descrizione: '',
-                annoUscita: '',
-                studio: '',
-                genere: '',
-                episodi: '',
-                inCorso: false,
-
-                async searchAnime() {
-                    if (this.searchQuery.trim().length < 3) {
-                        this.searchResults = [];
-                        return;
-                    }
-                    this.isSearching = true;
-                    const query = `
-                    query ($search: String) {
-                        Page(page: 1, perPage: 8) {
-                            media(search: $search, type: ANIME) {
-                                id
-                                title { romaji english }
-                                coverImage { extraLarge }
-                                description(asHtml: false)
-                                seasonYear
-                                episodes
-                                genres
-                                status
-                                studios(isMain: true) { nodes { name } }
-                            }
-                        }
-                    }`;
-                    try {
-                        const response = await fetch('https://graphql.anilist.co', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                            body: JSON.stringify({ query, variables: { search: this.searchQuery } })
-                        });
-                        const data = await response.json();
-                        this.searchResults = data.data.Page.media;
-                    } catch (e) {
-                        this.searchResults = [];
-                    } finally {
-                        this.isSearching = false;
-                    }
-                },
-
-                selectAnime(anime) {
-                    this.titolo = anime.title.english || anime.title.romaji || '';
-                    this.coverUrl = anime.coverImage?.extraLarge || '';
-                    this.descrizione = anime.description ? anime.description.replace(/<[^>]*>?/gm, '') : '';
-                    this.annoUscita = anime.seasonYear || '';
-                    this.episodi = anime.episodes || '';
-                    this.genere = anime.genres ? anime.genres.join(', ') : '';
-                    this.studio = anime.studios?.nodes?.[0]?.name || '';
-                    this.inCorso = anime.status === 'RELEASING';
-                    
-                    this.searchResults = [];
-                    this.searchQuery = '';
-                }
+                titolo: prefill?.titolo || '',
+                coverUrl: prefill?.coverUrl || '',
+                descrizione: prefill?.descrizione || '',
+                annoUscita: prefill?.annoUscita || '',
+                studio: prefill?.studio || '',
+                genere: prefill?.genere || '',
+                episodi: prefill?.episodi || '',
+                inCorso: prefill?.inCorso || false
             }));
         });
     </script>
