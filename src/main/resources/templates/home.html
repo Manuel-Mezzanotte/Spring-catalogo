@@ -71,7 +71,7 @@
                 <div class="w-full aspect-[4/5] bg-gray-100 dark:bg-gray-900 relative overflow-hidden rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800">
                     <img th:src="${anime.coverUrl}" alt="Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300x450?text=No+Cover'">
                     
-                    <div th:if="${anime.genere != null && !anime.genere.isEmpty()}" class="absolute top-2 right-2 bg-primary/90 text-white text-xs font-semibold px-2 py-1 rounded-md backdrop-blur-sm shadow-sm" th:text="${anime.genere}"></div>
+                    <div th:if="${anime.genere != null && !anime.genere.isEmpty()}" class="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1 rounded-md border border-white/10 shadow-sm" th:text="${anime.genere}"></div>
                     
                     <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-2.5 py-1.5 rounded-full shadow-sm flex items-center gap-1.5 border border-white/10">
                         <span class="w-1.5 h-1.5 rounded-full" th:classappend="${anime.inCorso} ? 'bg-green-400' : 'bg-gray-400'"></span>
