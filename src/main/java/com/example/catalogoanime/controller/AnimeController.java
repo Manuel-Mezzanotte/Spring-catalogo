@@ -23,9 +23,21 @@ public class AnimeController {
     private final UserRepository userRepository;
 
     @GetMapping("/")
-    public String home(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String home(
+            @RequestParam(required = false) String search,
+            Model model, 
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
         AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        List<Anime> animes = animeRepository.findByUser(currentUser);
+        
+        List<Anime> animes;
+        if (search != null && !search.trim().isEmpty()) {
+            animes = animeRepository.findByUserAndTitoloContainingIgnoreCase(currentUser, search);
+            model.addAttribute("search", search);
+        } else {
+            animes = animeRepository.findByUser(currentUser);
+        }
+        
         model.addAttribute("animes", animes);
         return "home";
     }

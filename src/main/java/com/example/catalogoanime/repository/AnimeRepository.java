@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AnimeRepository extends JpaRepository<Anime, Long> {
     List<Anime> findByUser(AppUser user);
+    List<Anime> findByUserAndTitoloContainingIgnoreCase(AppUser user, String titolo);
 }
