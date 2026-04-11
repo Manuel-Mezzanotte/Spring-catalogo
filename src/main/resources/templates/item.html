@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dettaglio Anime</title>
+</head>
+<body>
+<div th:replace="~{layout :: layout(~{::main})}">
+<main class="flex-1 overflow-y-auto">
+    <div class="h-full p-4 lg:p-8">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a th:href="@{/}" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-50 h-9 w-9">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4"><path d="m15 18-6-6 6-6"/></svg>
+                        <span class="sr-only">Indietro</span>
+                    </a>
+                    <h1 class="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white" th:text="${anime.titolo}">Titolo Anime</h1>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-sidebar-dark rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:shrink-0 max-h-[400px] md:max-h-[500px] flex flex-col items-center">
+                        <img class="h-full w-full object-contain md:w-64 pt-4 px-4 md:py-4 rounded-xl" th:src="${anime.coverUrl}" th:alt="${anime.titolo}">
+                        
+                        <div class="w-full px-4 pb-4">
+                            <form th:action="@{/api/anime/delete/{id}(id=${anime.id})}" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare questo anime?');" class="w-full">
+                                <button type="submit" class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary h-9 px-4 py-2 bg-red-600/10 text-red-600 hover:bg-red-600 hover:text-white dark:bg-red-500/10 dark:text-red-500 dark:hover:bg-red-600 dark:hover:text-white shadow-sm border border-red-200 dark:border-red-900/50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                                    Elimina Anime
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="p-8 w-full">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="inline-flex items-center rounded-full border border-gray-200 dark:border-gray-700 px-2.5 py-0.5 text-xs font-semibold text-gray-900 dark:text-gray-100" th:if="${anime.genere}" th:text="${anime.genere}">Genere</span>
+                            <span class="inline-flex items-center rounded-full border border-transparent bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 px-2.5 py-0.5 text-xs font-semibold" th:if="${anime.inCorso}">In Corso</span>
+                        </div>
+                        
+                        <p class="mt-2 text-gray-500 dark:text-gray-400" th:text="${anime.descrizione ?: 'Nessuna descrizione disponibile.'}">Descrizione...</p>
+                        
+                        <div class="mt-6 grid grid-cols-2 gap-4 border-t border-gray-100 dark:border-gray-800 pt-6">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Anno d'uscita</h3>
+                                <p class="mt-1 text-sm text-gray-900 dark:text-white" th:text="${anime.annoUscita ?: 'N/A'}">2024</p>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Episodi</h3>
+                                <p class="mt-1 text-sm text-gray-900 dark:text-white" th:text="${anime.episodi ?: 'N/A'}">12</p>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Studio di animazione</h3>
+                                <p class="mt-1 text-sm text-gray-900 dark:text-white" th:text="${anime.studio ?: 'N/A'}">Studio</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+</body>
+</html>

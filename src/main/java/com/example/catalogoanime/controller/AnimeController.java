@@ -35,6 +35,19 @@ public class AnimeController {
         return "new";
     }
 
+    @GetMapping("/item/{id}")
+    public String itemDetail(@org.springframework.web.bind.annotation.PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Anime anime = animeRepository.findById(id).orElse(null);
+        
+        if (anime == null || !anime.getUser().getId().equals(currentUser.getId())) {
+            return "redirect:/";
+        }
+        
+        model.addAttribute("anime", anime);
+        return "item";
+    }
+
     @PostMapping("/api/anime/create")
     public String createAnime(
             @RequestParam String titolo,
@@ -62,6 +75,18 @@ public class AnimeController {
 
         animeRepository.save(anime);
 
+        return "redirect:/";
+    }
+
+    @PostMapping("/api/anime/delete/{id}")
+    public String deleteAnime(@org.springframework.web.bind.annotation.PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        Anime anime = animeRepository.findById(id).orElse(null);
+        
+        if (anime != null && anime.getUser().getId().equals(currentUser.getId())) {
+            animeRepository.delete(anime);
+        }
+        
         return "redirect:/";
     }
 }
