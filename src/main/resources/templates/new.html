@@ -4,112 +4,140 @@
     <title>Nuovo Anime</title>
 </head>
 <body>
-<main th:fragment="content" class="flex flex-col h-[calc(100vh-3.5rem)] gap-4 p-4 sm:p-6 lg:p-8" 
-      x-data="animeForm({})">
-    <div class="flex items-center justify-between shrink-0">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Aggiungi Nuovo Anime</h1>
-        <a th:href="@{/}" class="inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none transition-colors">
-            Torna al catalogo
-        </a>
+<main th:fragment="content" class="flex flex-col h-[calc(100vh-3.5rem)]" x-data="animeForm({})">
+    
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shrink-0 z-30">
+        <div class="px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">Aggiungi al Catalogo</h1>
+            </div>
+            <a th:href="@{/}" class="shrink-0 inline-flex items-center justify-center rounded-full text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 h-8 w-8 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    <span class="sr-only">Indietro</span>
+                </a> 
+        </div>
     </div>
 
-    <div class="bg-white dark:bg-sidebar-dark rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col h-full overflow-hidden">
-        <form th:action="@{/api/anime/create}" method="post" id="newAnimeForm" class="flex flex-col h-full m-0 p-0">
-            <div class="p-6 flex-1 overflow-y-auto space-y-5">
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 relative z-0">
-                    <div class="space-y-3 md:col-span-2">
-                        <div class="space-y-1">
-                            <label for="titolo" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Titolo <span class="text-destructive">*</span></label>
-                            <input type="text" id="titolo" name="titolo" x-model="titolo" required placeholder="Inserisci il titolo dell'anime"
-                                   class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
-                        </div>
-
-                        <div class="space-y-1">
-                            <label for="coverUrl" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">URL Copertina <span class="text-destructive">*</span></label>
-                            <input type="url" id="coverUrl" name="coverUrl" x-model="coverUrl" required placeholder="https://..."
-                                   class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
-                        </div>
-
-                        <div class="space-y-1">
-                            <label for="descrizione" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Descrizione</label>
-                            <textarea id="descrizione" name="descrizione" rows="4" x-model="descrizione" placeholder="Breve trama..."
-                                      class="flex h-24 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white resize-y"></textarea>
-                        </div>
-                    </div>
-
-                        <div class="flex flex-col space-y-3">
-                            <div class="w-full h-full min-h-[200px] max-h-[300px] bg-gray-100 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col items-center justify-center text-center p-2">
-                            <template x-if="coverUrl">
-                                <img :src="coverUrl" alt="Cover Preview" class="w-full h-full object-contain rounded-md" @error="$el.style.display='none'">
-                            </template>
-                            <template x-if="!coverUrl">
-                                <div class="text-gray-400 dark:text-gray-500">
-                                    <svg class="mx-auto h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <span class="text-xs font-medium">Anteprima</span>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="space-y-1">
-                        <label for="genere" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Genere</label>
-                        <select id="genere" name="genere" x-model="genere"
-                                class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
-                            <option value="">Seleziona...</option>
-                            <option value="Shonen">Shonen</option>
-                            <option value="Seinen">Seinen</option>
-                            <option value="Shojo">Shojo</option>
-                            <option value="Josei">Josei</option>
-                            <option value="Isekai">Isekai</option>
-                            <option value="Mecha">Mecha</option>
-                            <option value="Slice of Life">Slice of Life</option>
-                            <option value="Fantasy">Fantasy</option>
-                            <option value="Sci-Fi">Sci-Fi</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Horror">Horror</option>
-                        </select>
-                    </div>
-                    <div class="space-y-1">
-                        <label for="annoUscita" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Anno uscita</label>
-                        <input type="number" id="annoUscita" name="annoUscita" x-model="annoUscita" placeholder="Es. 2024" min="1960" max="2030"
-                               class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
-                    </div>
-                    <div class="space-y-1">
-                        <label for="studio" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Studio</label>
-                        <input type="text" id="studio" name="studio" x-model="studio" placeholder="Es. MAPPA..."
-                               class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
-                    </div>
-                    <div class="space-y-1">
-                        <label for="episodi" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Episodi</label>
-                        <input type="number" id="episodi" name="episodi" x-model="episodi" placeholder="12" min="1"
-                               class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary dark:text-white">
-                    </div>
-                </div>
-                
-                <div class="flex items-center mt-2">
-                    <label class="flex items-center gap-3 cursor-pointer rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-4 h-10 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors w-full sm:w-auto shadow-sm">
-                        <input type="checkbox" id="inCorso" name="inCorso" x-model="inCorso" value="true" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                        <span class="text-sm font-medium text-gray-900 dark:text-gray-200">Anime attualmente in corso (Airing)</span>
-                    </label>
-                </div>
-
-            </div>
+    <div class="flex-1 overflow-y-auto bg-gray-50 dark:bg-black/50 p-4 sm:p-6 lg:p-8 flex justify-center">
+        
+        <form th:action="@{/api/anime/create}" method="post" id="newAnimeForm" class="w-full max-w-5xl m-0 p-0">
             
-            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800 flex justify-end gap-3 shrink-0">
-                <a th:href="@{/}" class="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-6 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors w-24">
-                    Annulla
-                </a>
-                <button type="submit" 
-                        class="inline-flex items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 px-6 py-2 text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed w-24"
-                        :disabled="titolo.trim().length === 0 || coverUrl.trim().length === 0">
-                    Crea
-                </button>
+            <div class="bg-white dark:bg-sidebar-dark rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 sm:p-8 md:p-10">
+                <div class="space-y-10"> 
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8 lg:gap-12">
+                        
+                        <div class="space-y-8">
+                            
+                            <section class="space-y-4">
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Informazioni di Base</h2>
+                                
+                                <div class="space-y-2">
+                                    <label for="titolo" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Titolo <span class="text-red-500">*</span></label>
+                                    <input type="text" id="titolo" name="titolo" x-model="titolo" required placeholder="Inserisci il titolo dell'anime"
+                                           class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white">
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="descrizione" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Descrizione</label>
+                                    <textarea id="descrizione" name="descrizione" rows="4" x-model="descrizione" placeholder="Breve trama..."
+                                              class="flex min-h-[100px] w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white resize-y"></textarea>
+                                </div>
+                            </section>
+
+                            <section class="space-y-4">
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Media</h2>
+                                
+                                <div class="space-y-2">
+                                    <label for="coverUrl" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">URL Copertina <span class="text-red-500">*</span></label>
+                                    <input type="url" id="coverUrl" name="coverUrl" x-model="coverUrl" required placeholder="https://..."
+                                           class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white">
+                                </div>
+                            </section>
+
+                        </div>
+
+                        <div class="w-full flex items-stretch h-full min-h-[300px]">
+                            <div class="w-full bg-gray-100 dark:bg-gray-800 border bg-gray-100 dark:border-gray-700 rounded-xl overflow-hidden relative flex items-center justify-center p-4">
+                                
+                                <div x-show="!coverUrl" class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 text-center">
+                                    <svg class="h-10 w-10 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <p class="text-sm font-medium">Anteprima</p>
+                                </div>
+
+                                <img x-show="coverUrl" :src="coverUrl" alt="Cover Preview" 
+                                     class="absolute inset-0 w-full h-full object-cover" 
+                                     @error="coverUrl = ''">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <section class="space-y-4">
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Metadati</h2>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="space-y-2">
+                                <label for="genere" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Genere</label>
+                                <select id="genere" name="genere" x-model="genere"
+                                        class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white appearance-none">
+                                    <option value="">Seleziona...</option>
+                                    <option value="Shonen">Shonen</option>
+                                    <option value="Seinen">Seinen</option>
+                                    <option value="Shojo">Shojo</option>
+                                    <option value="Josei">Josei</option>
+                                    <option value="Isekai">Isekai</option>
+                                    <option value="Mecha">Mecha</option>
+                                    <option value="Fantasy">Fantasy</option>
+                                    <option value="Sci-Fi">Sci-Fi</option>
+                                    <option value="Slice of Life">Slice of Life</option>
+                                    <option value="Horror">Horror</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="annoUscita" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Anno uscita</label>
+                                <input type="number" id="annoUscita" name="annoUscita" x-model="annoUscita" placeholder="Es. 2024" min="1960" max="2030"
+                                       class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="studio" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Studio</label>
+                                <input type="text" id="studio" name="studio" x-model="studio" placeholder="Es. MAPPA..."
+                                       class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label for="episodi" class="text-sm font-medium leading-none text-gray-900 dark:text-gray-200">Episodi</label>
+                                <input type="number" id="episodi" name="episodi" x-model="episodi" placeholder="12" min="1"
+                                       class="flex h-9 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-gray-400 dark:placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary text-gray-900 dark:text-white">
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="flex items-center">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" id="inCorso" name="inCorso" x-model="inCorso" 
+                                   class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 transition-colors">
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-200 group-hover:text-primary transition-colors">Anime attualmente in corso (Airing)</span>
+                        </label>
+                    </div>
+
+                    <div class="border-t border-gray-200 dark:border-gray-800 pt-6 mt-8 flex justify-end gap-3">
+                        <a th:href="@{/}" class="inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-6 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-all">
+                            Annulla
+                        </a>
+                        <button type="submit" class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-medium text-white shadow-sm shadow-primary/20 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-900 transition-all disabled:opacity-50">
+                            Crea
+                        </button>
+                    </div>
+
+                </div>
             </div>
+
         </form>
     </div>
 </main>
