@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -26,19 +27,26 @@ public class AnimeController {
     @GetMapping("/")
     public String home(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false, defaultValue = "titolo,asc") String sort,
             Model model, 
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         AppUser currentUser = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
         
+        String[] sortParams = sort.split(",");
+        String sortField = sortParams[0];
+        Sort.Direction sortDirection = sortParams.length > 1 && sortParams[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sortObj = Sort.by(sortDirection, sortField);
+
         List<Anime> animes;
         if (search != null && !search.trim().isEmpty()) {
-            animes = animeRepository.findByUserAndTitoloContainingIgnoreCaseOrderByTitoloAsc(currentUser, search);
+            animes = animeRepository.findByUserAndTitoloContainingIgnoreCase(currentUser, search, sortObj);
             model.addAttribute("search", search);
         } else {
-            animes = animeRepository.findByUserOrderByTitoloAsc(currentUser);
+            animes = animeRepository.findByUser(currentUser, sortObj);
         }
         
+        model.addAttribute("sortParam", sort);
         model.addAttribute("animes", animes);
         return "home";
     }
